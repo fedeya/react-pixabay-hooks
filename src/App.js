@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from "axios";
 
 import Searcher from "./components/Searcher";
@@ -10,6 +10,8 @@ function App() {
   const [images, setImages] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+
+  const jumbotron = useRef(null);
 
   useEffect(() => {
     const consultAPI = async () => {
@@ -27,11 +29,10 @@ function App() {
       setImages(res.data.hits);
       setTotalPages(Math.ceil(res.data.totalHits / res.data.hits.length));
 
-      const jumbotron = document.querySelector(".jumbotron");
-      jumbotron.scrollIntoView({
+      jumbotron.current.scrollIntoView({
         behavior: "smooth",
         block: "start"
-      });
+      })
 
     }
 
@@ -53,7 +54,7 @@ function App() {
 
   return (
     <div className="container">
-      <div className="jumbotron">
+      <div className="jumbotron" ref={jumbotron} >
         <p className="lead text-center">
           Searcher of Images
         </p>
